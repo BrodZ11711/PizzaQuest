@@ -123,10 +123,10 @@ var musicBackground;
 var cells = []; // the array that holds our simplified collision data
 function initialize() {
     musicBackground = new Howl({
-        urls: ["background.ogg"],
+        urls: ["Blazing-Stars_Level_1.ogg"],
         loop: true,
         buffer: true,
-        volume: 0.2
+        volume: 0.6
     });
     musicBackground.play();
     // initialize trigger layer in collision map
