@@ -274,9 +274,14 @@ function drawMap() {
             return;
         }
 
+        //Draw Lives Text
+        context.fillStyle = "#fa335e";
+        context.font = "18px Arial";
+        context.fillText("Lives: " , 5, 40, 100);
+
         //Draw Hearts (Lives)
         for (var i = 0; i < lives; i++) {
-            context.drawImage(heartImage, 5 + ((heartImage.width) * i / 14), 20, 30, 30);
+            context.drawImage(heartImage, 5 + ((heartImage.width) * i / 60), 50, 30, 30);
         }
         if (player.position.y >= canvas.height) {
             lives -= 1;
