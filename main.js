@@ -55,13 +55,41 @@ var score = 0;
 var lives = 3;
 var timer = 120;
 
+//-----------ENEMIES----------------
+var ENEMY_MAXDX = METER * 5;
+var ENEMY_ACCEL = ENEMY_MAXDX * 2;
+var enemies = [];
+var LAYER_COUNT = 4;
+var LAYER_BACKGOUND = 0;
+var LAYER_PLATFORMS = 1;
+var LAYER_LADDERS = 2;
+var LAYER_OBJECT_ENEMIES = 3;
+var LAYER_OBJECT_TRIGGERS = 4;
+//----------------------------------
+
+
+
+//----BACKGROUND-----
+//load the image to use for the tiled background
+var star = document.createElement("img");
+star.src = "stars.png"
+
+//Create the tiled background
+var background = [];
+for (var y = 0; y < 15; y++) {
+    background[y] = [];
+    for (var x = 0; x < 20; x++)
+        background[y][x] = star;
+}
+
+
 var heartImage = document.createElement("img");
 heartImage.src = "heart.png";
 
 // abitrary choice for 1m
 var METER = TILE;
 // very exaggerated gravity (6x)
-var GRAVITY = METER * 9.8 * 6;
+var GRAVITY = METER * 3 * 6;
 // max horizontal speed (10 tiles per second)
 var MAXDX = METER * 10;
 // max vertical speed (15 tiles per second)
@@ -86,6 +114,19 @@ tileset.src = "tileset.png";
 
 // load an image to draw
 var player = new Player();
+
+//----enemies test----
+
+
+
+
+var enemey = new Enemy();
+
+
+
+//---enemies test----
+
+
 var keyboard = new Keyboard();
 //---------------------------------------------------------------------------------------------------------------------------
 function cellAtPixelCoord(layer, x, y) {
@@ -123,12 +164,18 @@ var musicBackground;
 var cells = []; // the array that holds our simplified collision data
 function initialize() {
     musicBackground = new Howl({
-        urls: ["Blazing-Stars_Level_1.ogg"],
+        urls: ["Music/Blazing-Stars_Level_1.ogg"],
         loop: true,
         buffer: true,
         volume: 0.6
     });
     musicBackground.play();
+
+   
+
+
+
+
     // initialize trigger layer in collision map
     cells[LAYER_OBJECT_TRIGGERS] = [];
     idx = 0;
@@ -169,8 +216,25 @@ function initialize() {
                 }
                 idx++;
             }
+
         }
     }
+
+    //------------------ add enemies---------------------------
+    // add enemies
+    idx = 0;
+    for (var y = 0; y < level1.layers[LAYER_OBJECT_ENEMIES].height; y++) {
+        for (var x = 0; x < level1.layers[LAYER_OBJECT_ENEMIES].width; x++) {
+            if (level1.layers[LAYER_OBJECT_ENEMIES].data[idx] != 0) {
+                var px = tileToPixel(x);
+                var py = tileToPixel(y);
+                var e = new Enemy(px, py);
+                enemies.push(e);
+            }
+            idx++;
+        }
+    }
+    //-----------------------------------------------------------
 }
 //---------------------------------------------------------------------------------------------------------------------------
 
@@ -234,9 +298,24 @@ function drawMap() {
 
         player.update(deltaTime);
         //Draw the world map
+        // draw the tiled background
+        for (var y = 0; y < 15; y++) {
+            for (var x = 0; x < 20; x++) {
+                context.drawImage(background[y][x], x * 32, y * 32)
+            }
+        }
+
         drawMap();
+
+
         player.draw();
 
+        for (var i = 0; i < enemies.length; i++) {
+           
+
+            enemies[i].draw();
+        }
+      
         // update the frame counter
         fpsTime += deltaTime;
         fpsCount++;
@@ -311,6 +390,13 @@ function run() {
     context.fillStyle = "#ccc";
     context.fillRect(0, 0, canvas.width, canvas.height);
     var deltaTime = getDeltaTime();
+
+//---------------Enemies-----------------------
+    for (var i = 0; i < enemies.length; i++) {
+       // enemies[i].update(deltaTime);
+
+       
+    }        //--------------------------------------------
 
     switch (gameState) {
         case STATE_SPLASH:
