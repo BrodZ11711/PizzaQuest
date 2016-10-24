@@ -56,15 +56,9 @@ var lives = 3;
 var timer = 120;
 
 //-----------ENEMIES----------------
-var ENEMY_MAXDX = METER * 5;
-var ENEMY_ACCEL = ENEMY_MAXDX * 2;
+
 var enemies = [];
-var LAYER_COUNT = 4;
-var LAYER_BACKGOUND = 0;
-var LAYER_PLATFORMS = 1;
-var LAYER_LADDERS = 2;
-var LAYER_OBJECT_ENEMIES = 3;
-var LAYER_OBJECT_TRIGGERS = 4;
+
 //----------------------------------
 
 
@@ -141,7 +135,7 @@ function cellAtTileCoord(layer, tx, ty) {
     if (tx < 0 || tx >= MAP.tw) // || ty < 0)
         return 1;
     // let the player drop of the bottom of the screen (this means death)
-    if (ty >= MAP.th)
+    if (ty >= MAP.th || ty < 0)
         return 0;
     return cells[layer][ty][tx];
 };
@@ -223,9 +217,9 @@ function initialize() {
     //------------------ add enemies---------------------------
     // add enemies
     idx = 0;
-    for (var y = 0; y < level1.layers[LAYER_OBJECT_ENEMIES].height; y++) {
-        for (var x = 0; x < level1.layers[LAYER_OBJECT_ENEMIES].width; x++) {
-            if (level1.layers[LAYER_OBJECT_ENEMIES].data[idx] != 0) {
+   /* for (var y = 0; y < level1.layers[LAYER_OBJECT_ENEMIES].height; y++) {
+      for (var x = 0; x < level1.layers[LAYER_OBJECT_ENEMIES].width; x++) {
+           if (level1.layers[LAYER_OBJECT_ENEMIES].data[idx] != 0) {
                 var px = tileToPixel(x);
                 var py = tileToPixel(y);
                 var e = new Enemy(px, py);
@@ -233,8 +227,46 @@ function initialize() {
             }
             idx++;
         }
-    }
+    }*/
+
+    //-------------------------------ENEMY's from left-right --------------------------
+
+    //wall of pineapples top-bottom
+    // first pineapple 
+    var px = tileToPixel(20);
+    var py = tileToPixel(3.5);
+    var e = new Enemy(px, py);
+    enemies.push(e);
+
+    //second pinapple
+    var px = tileToPixel(20);
+    var py = tileToPixel(1);
+    var e = new Enemy(px, py);
+    enemies.push(e);
+
+    //third pinapple
+    var px = tileToPixel(20);
+    var py = tileToPixel(-1.5);
+    var e = new Enemy(px, py);
+    enemies.push(e);
+    //-----------------------------
+
+    //second pineapple
+    var px = tileToPixel(45.5);
+    var py = tileToPixel(4);
+    var e = new Enemy(px, py);
+    enemies.push(e);
+
+    //third pineapple
+    var px = tileToPixel(55);
+    var py = tileToPixel(6.5);
+    var e = new Enemy(px, py);
+    enemies.push(e);
+
     //-----------------------------------------------------------
+
+
+    
 }
 //---------------------------------------------------------------------------------------------------------------------------
 
@@ -396,7 +428,41 @@ function run() {
        // enemies[i].update(deltaTime);
 
        
-    }        //--------------------------------------------
+    }    // tests if two rectangles are intersecting.
+    // Pass in the x,y coordinates, width and height of each rectangle.
+    // Returns 'true' if the rectangles are intersecting
+    function intersects(x1, y1, w1, h1, x2, y2, w2, h2) {
+        if (y2 + h2 < y1 ||
+        x2 + w2 < x1 ||
+        x2 > x1 + w1 ||
+        y2 > y1 + h1) {
+            return false;
+        }
+        return true;
+    }
+
+
+    //PLAYER COLLISION AGAINST PINEAPPLE
+
+    //player collision
+    for (var i = 0; i < enemies.length; i++) {
+        if (intersects(
+         player.position.x - player.width / 2,
+         player.position.y - player.height / 2,
+         player.width, player.height,
+         enemies[i].position.x - enemies[i].width / 2,
+         enemies[i].position.y - enemies[i].height / 2,
+         enemies[i].width, enemies[i].height) == true) {
+            
+
+          player.isDead = true;
+            console.log("IS DEAD")
+
+        }
+    }    if (player.isDead == true) {
+        gameState = STATE_GAMEOVER;
+
+    }    //--------------------------------------------
 
     switch (gameState) {
         case STATE_SPLASH:

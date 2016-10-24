@@ -44,6 +44,8 @@ var Player = function ()
     this.width = 159;
     this.height = 163;
 
+    this.isDead = false
+
     this.velocity = new Vector2();
 
     this.falling = true;
@@ -181,6 +183,17 @@ Player.prototype.update = function (deltaTime)
         }
     }
     
+    if (cellAtTileCoord(LAYER_OBJECT_TRIGGERS, tx, ty) == true)
+    {
+        console.log("Game Over") // game over man, game over  
+    }
+
+    if (cellAtTileCoord(LAYER_OBJECT_TRIGGERS, tx, ty) == true) 
+    {        // game over splash screen        
+             gameState = STATE_GAMEOVER;
+             return;
+    }
+
     //this will make it so if you press left on keyboard the animation will go left.
     if (keyboard.isKeyDown(keyboard.KEY_LEFT) == true)
     {
@@ -237,7 +250,7 @@ Player.prototype.update = function (deltaTime)
     {
         this.cooldownTimer -= deltaTime;
     }
-   
+    
 
 }
 
