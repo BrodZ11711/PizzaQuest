@@ -2,8 +2,8 @@
 
 var Enemy = function (x, y) {
     this.image = document.createElement('img')
-    this.width = 112;
-    this.height = 112;
+    this.width = 55;
+    this.height = 102;
     this.image.src = "pineapple_enemy_converted.png";
     this.position = new Vector2();
     this.position.set(x, y);
@@ -60,7 +60,8 @@ Enemy.prototype.update = function (dt) {
 Enemy.prototype.draw = function () {
        context.drawImage(this.image,
         this.position.x - worldOffsetX,
-        this.position.y);
+        this.position.y);
+
    // context.drawImage(this.image,
    //     0, 0);
   //  console.log(this.position)

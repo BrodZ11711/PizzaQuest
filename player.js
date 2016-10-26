@@ -44,8 +44,6 @@ var Player = function ()
     this.width = 159;
     this.height = 163;
 
-    this.isDead = false
-
     this.velocity = new Vector2();
 
     this.falling = true;
@@ -183,15 +181,41 @@ Player.prototype.update = function (deltaTime)
         }
     }
     
-    if (cellAtTileCoord(LAYER_OBJECT_TRIGGERS, tx, ty) == true)
+    
+    if (cellAtTileCoord(LAYER_OBJECT_TRIGGERS, tx, ty) && currentLevel == level1)
     {
-        console.log("Game Over") // game over man, game over  
+        // game over splash screen
+        currentLevel = level2;
+        initialize();
+        return;
+    }
+     
+    if (cellAtTileCoord(LAYER_OBJECT_TRIGGERS, tx, ty) && currentLevel == level2)
+    {
+        currentLevel = level3;
+        initialize();
+        return;
     }
 
-    if (cellAtTileCoord(LAYER_OBJECT_TRIGGERS, tx, ty) == true) 
-    {        // game over splash screen        
-             gameState = STATE_GAMEOVER;
-             return;
+    if (cellAtTileCoord(LAYER_OBJECT_TRIGGERS, tx, ty) && currentLevel == level3)
+    {
+        currentLevel = level4;
+        initialize();
+        return;
+    }
+
+    if (cellAtTileCoord(LAYER_OBJECT_TRIGGERS, tx, ty) && currentLevel == level4)
+    {
+        currentLevel = level5;
+        initialize();
+        return;
+    }
+
+    if (cellAtTileCoord(LAYER_OBJECT_TRIGGERS, tx, ty) && currentLevel == level5)
+    {
+        currentLevel = level6;
+        initialize();
+        return;
     }
 
     //this will make it so if you press left on keyboard the animation will go left.
@@ -250,7 +274,12 @@ Player.prototype.update = function (deltaTime)
     {
         this.cooldownTimer -= deltaTime;
     }
-    
+    if (keyboard.isKeyDown(keyboard.KEY_SPACE) == true && this.cooldownTimer <= 0)
+    {
+        sfxFire.play();
+        this.cooldownTimer = 0.3;
+        // Shoot a bullet
+    }
 
 }
 

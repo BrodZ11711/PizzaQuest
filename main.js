@@ -9,6 +9,11 @@ var STATE_SPLASH = 0;
 var STATE_GAME = 1;
 var STATE_GAMEOVER = 2;
 
+//-------SCORE-----
+var score = 0
+var timer = 120;
+//-------SCORE------
+
 var gameState = STATE_SPLASH
 // This function will return the time in seconds since the function 
 // was last called
@@ -43,7 +48,15 @@ var LAYER_PLATFORMS = 1;
 var LAYER_LADDERS = 2;
 var LAYER_OBJECT_TRIGGERS = 3;
 
-var MAP = { tw: 60, th: 15 };
+if (currentLevel = level1 || level2 || level3)
+{
+    var MAP = { tw: 60, th: 15 };
+}
+else if (currentLevel = level4)
+{
+    var MAP = { tw: 120, th: 15 };
+}
+
 var TILE = 35;
 var TILESET_TILE = TILE * 2;
 var TILESET_PADDING = 2;
@@ -51,14 +64,16 @@ var TILESET_SPACING = 2;
 var TILESET_COUNT_X = 14;
 var TILESET_COUNT_Y = 14;
 
-var score = 0;
+var currentLevel = level1;
+
 var lives = 3;
-var timer = 120;
+
 
 //-----------ENEMIES----------------
 
 var enemies = [];
-
+
+
 //----------------------------------
 
 
@@ -164,7 +179,7 @@ function initialize() {
         volume: 0.6
     });
     musicBackground.play();
-
+    player.position.set(3 * TILE, 0 * TILE);
    
 
 
@@ -173,10 +188,10 @@ function initialize() {
     // initialize trigger layer in collision map
     cells[LAYER_OBJECT_TRIGGERS] = [];
     idx = 0;
-    for (var y = 0; y < level1.layers[LAYER_OBJECT_TRIGGERS].height; y++) {
+    for (var y = 0; y < currentLevel.layers[LAYER_OBJECT_TRIGGERS].height; y++) {
         cells[LAYER_OBJECT_TRIGGERS][y] = [];
-        for (var x = 0; x < level1.layers[LAYER_OBJECT_TRIGGERS].width; x++) {
-            if (level1.layers[LAYER_OBJECT_TRIGGERS].data[idx] != 0) {
+        for (var x = 0; x < currentLevel.layers[LAYER_OBJECT_TRIGGERS].width; x++) {
+            if (currentLevel.layers[LAYER_OBJECT_TRIGGERS].data[idx] != 0) {
                 cells[LAYER_OBJECT_TRIGGERS][y][x] = 1;
                 cells[LAYER_OBJECT_TRIGGERS][y - 1][x] = 1;
                 cells[LAYER_OBJECT_TRIGGERS][y - 1][x + 1] = 1;
@@ -192,10 +207,10 @@ function initialize() {
     for (var layerIdx = 0; layerIdx < LAYER_COUNT; layerIdx++) { // initialize the collision map
         cells[layerIdx] = [];
         var idx = 0;
-        for (var y = 0; y < level1.layers[layerIdx].height; y++) {
+        for (var y = 0; y < currentLevel.layers[layerIdx].height; y++) {
             cells[layerIdx][y] = [];
-            for (var x = 0; x < level1.layers[layerIdx].width; x++) {
-                if (level1.layers[layerIdx].data[idx] != 0) {
+            for (var x = 0; x < currentLevel.layers[layerIdx].width; x++) {
+                if (currentLevel.layers[layerIdx].data[idx] != 0) {
                     // for each tile we find in the layer data, we need to create 4 collisions
                     // (because our collision squares are 35x35 but the tile in the
                     // level are 70x70)
@@ -217,9 +232,9 @@ function initialize() {
     //------------------ add enemies---------------------------
     // add enemies
     idx = 0;
-   /* for (var y = 0; y < level1.layers[LAYER_OBJECT_ENEMIES].height; y++) {
-      for (var x = 0; x < level1.layers[LAYER_OBJECT_ENEMIES].width; x++) {
-           if (level1.layers[LAYER_OBJECT_ENEMIES].data[idx] != 0) {
+   /* for (var y = 0; y < currentLevel.layers[LAYER_OBJECT_ENEMIES].height; y++) {
+      for (var x = 0; x < currentLevel.layers[LAYER_OBJECT_ENEMIES].width; x++) {
+           if (currentLevel.layers[LAYER_OBJECT_ENEMIES].data[idx] != 0) {
                 var px = tileToPixel(x);
                 var py = tileToPixel(y);
                 var e = new Enemy(px, py);
@@ -290,13 +305,13 @@ function drawMap() {
     worldOffsetX = startX * TILE + offsetX;
 
     for (var layerIdx = 0; layerIdx < LAYER_COUNT; layerIdx++) {
-        for (var y = 0; y < level1.layers[layerIdx].height; y++) {
-            var idx = y * level1.layers[layerIdx].width + startX;
+        for (var y = 0; y < currentLevel.layers[layerIdx].height; y++) {
+            var idx = y * currentLevel.layers[layerIdx].width + startX;
             for (var x = startX; x < startX + maxTiles; x++) {
-                if (level1.layers[layerIdx].data[idx] != 0) {
+                if (currentLevel.layers[layerIdx].data[idx] != 0) {
                     // the tiles in the Tiled map are base 1 (meaning a value of 0 means no tile),
                     // so subtract one from the tileset id to get the correct tile
-                    var tileIndex = level1.layers[layerIdx].data[idx] - 1;
+                    var tileIndex = currentLevel.layers[layerIdx].data[idx] - 1;
                     var sx = TILESET_PADDING + (tileIndex % TILESET_COUNT_X) *
                    (TILESET_TILE + TILESET_SPACING);
                     var sy = TILESET_PADDING + (Math.floor(tileIndex / TILESET_COUNT_Y)) *
@@ -320,10 +335,15 @@ function drawMap() {
             gameState = STATE_GAME;
             return;
         }
+        var happyPizza = document.createElement("img");
+        happyPizza.src = "happy pizza.jpg";
+
+        context.drawImage(happyPizza, 0, 0, canvas.width, canvas.height);
+
         //this customizies the splash 
-        context.fillStyle = "#000";
-        context.font = "35px Comic Sans";
-        context.fillText("Are you ready?", 200, 240);
+        context.fillStyle = "#7D0552";
+        context.font = "50px Comic Sans";
+        context.fillText("Are you ready?", 170, 290);
     }
     
     function runGame(deltaTime) {
@@ -346,7 +366,8 @@ function drawMap() {
            
 
             enemies[i].draw();
-        }
+        }
+
       
         // update the frame counter
         fpsTime += deltaTime;
@@ -362,27 +383,19 @@ function drawMap() {
         context.font = "14px Arial";
         context.fillText("FPS: " + fps, 5, 20, 100);
 
-        //Draw score
+        //------SCORE/TIMER--------
         context.fillStyle = "#fa335e";
         context.font = "20px Arial";
         var scoreText = "Score: " + score.toFixed(0);
         context.fillText(scoreText, SCREEN_WIDTH - 170, 35);
 
-        //Timer
-        if(timer >= 10){
-            var timerText = "Timer Left:" + timer.toFixed(1);
-            context.fillText(timerText, SCREEN_WIDTH - 170, 55);
-        }
-        else {
-            var timerText = "Timer Left:" + timer.toFixed(2);
-            context.fillText(timerText, SCREEN_WIDTH - 170, 55);
-        }
+        var timerText = "Time Left: " + timer.toFixed(0);
         timer -= deltaTime;
-        score += deltaTime * 0.2;
-       
-        if (timer < 0) {
-            gameState = STATE_GAMEOVER;
-            return;
+        score += deltaTime * 2,
+        context.fillText(timerText, SCREEN_WIDTH - 400, 30);
+        if (timer < 0)
+        {
+            gameState = STATE_GAMEOVER
         }
 
         //Draw Lives Text
@@ -406,11 +419,16 @@ function drawMap() {
     }
 
     function runGameOver(deltaTime) {
+        var sadPizza = document.createElement("img");
+        sadPizza.src = "sad pizza.jpg";
+
+        context.drawImage(sadPizza, 0, 0, canvas.width, canvas.height);
+
         //this customizies the splash 
-        context.fillStyle = "#000";
-        context.font = "35px Comic Sans";
-        context.fillText("Game Over", 200, 240);
-        
+        context.fillStyle = "#7D0552";
+        context.font = "50px Comic Sans";
+        context.fillText("Game Over", 200, 290);
+
     }
 
 
@@ -428,7 +446,9 @@ function run() {
        // enemies[i].update(deltaTime);
 
        
-    }    // tests if two rectangles are intersecting.
+    }
+
+    // tests if two rectangles are intersecting.
     // Pass in the x,y coordinates, width and height of each rectangle.
     // Returns 'true' if the rectangles are intersecting
     function intersects(x1, y1, w1, h1, x2, y2, w2, h2) {
@@ -455,14 +475,22 @@ function run() {
          enemies[i].width, enemies[i].height) == true) {
             
 
-          player.isDead = true;
+          player.isDead = false;
             console.log("IS DEAD")
 
         }
-    }    if (player.isDead == true) {
+    }
+
+
+    if (player.isDead == true) {
         gameState = STATE_GAMEOVER;
 
-    }    //--------------------------------------------
+    }
+    
+
+
+//--------------------------------------------
+
 
     switch (gameState) {
         case STATE_SPLASH:
