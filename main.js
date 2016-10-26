@@ -385,16 +385,114 @@ function initialize()
 
         
         //second pineapple
-        var px = tileToPixel(25);
+        var px = tileToPixel(35);
         var py = tileToPixel(3.5);
         var e = new Enemy(px, py);
         enemies.push(e);
 
 
+        //Third pineapple
 
+        var px = tileToPixel(45);
+        var py = tileToPixel(3.5);
+        var e = new Enemy(px, py);
+        enemies.push(e);
 
     }
 
+    if (currentLevel == level4)
+    {
+        //first pineapple
+        var px = tileToPixel(20);
+        var py = tileToPixel(3.5);
+        var e = new Enemy(px, py);
+        enemies.push(e);
+
+        //second pineappple
+        var px = tileToPixel(45);
+        var py = tileToPixel(3.5);
+        var e = new Enemy(px, py);
+        enemies.push(e);
+
+        //third pineappple
+        var px = tileToPixel(35);
+        var py = tileToPixel(3.5);
+        var e = new Enemy(px, py);
+        enemies.push(e);
+
+
+        var px = tileToPixel(68);
+        var py = tileToPixel(4);
+        var e = new Enemy(px, py);
+        enemies.push(e);
+
+        var px = tileToPixel(115);
+        var py = tileToPixel(4);
+        var e = new Enemy(px, py);
+        enemies.push(e);
+    }
+
+    if (currentLevel == level5)
+    {
+        var px = tileToPixel(12);
+        var py = tileToPixel(3.5);
+        var e = new Enemy(px, py);
+        enemies.push(e);
+
+        var px = tileToPixel(52);
+        var py = tileToPixel(3.5);
+        var e = new Enemy(px, py);
+        enemies.push(e);
+
+        var px = tileToPixel(65);
+        var py = tileToPixel(3.5);
+        var e = new Enemy(px, py);
+        enemies.push(e);
+
+        var px = tileToPixel(165);
+        var py = tileToPixel(3.5);
+        var e = new Enemy(px, py);
+        enemies.push(e);
+
+    }
+
+    if (currentLevel == level6) {
+        var px = tileToPixel(35);
+        var py = tileToPixel(3.5);
+        var e = new Enemy(px, py);
+        enemies.push(e);
+
+        var px = tileToPixel(52);
+        var py = tileToPixel(3.5);
+        var e = new Enemy(px, py);
+        enemies.push(e);
+
+        var px = tileToPixel(68);
+        var py = tileToPixel(4);
+        var e = new Enemy(px, py);
+        enemies.push(e);
+
+        var px = tileToPixel(115);
+        var py = tileToPixel(4);
+        var e = new Enemy(px, py);
+        enemies.push(e);
+
+        var px = tileToPixel(165);
+        var py = tileToPixel(3.5);
+        var e = new Enemy(px, py);
+        enemies.push(e);
+
+
+        var px = tileToPixel(220);
+        var py = tileToPixel(3.5);
+        var e = new Enemy(px, py);
+        enemies.push(e);
+
+        var px = tileToPixel(260);
+        var py = tileToPixel(3.5);
+        var e = new Enemy(px, py);
+        enemies.push(e);
+    }
 
 
     //-----------------------------------------------------------
@@ -610,6 +708,7 @@ function run() {
         return true;
     }
 
+    
 
     //PLAYER COLLISION AGAINST PINEAPPLE
 
