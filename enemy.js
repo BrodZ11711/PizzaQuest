@@ -2,8 +2,8 @@
 
 var Enemy = function (x, y) {
     this.image = document.createElement('img')
-    this.width = 55;
-    this.height = 102;
+    this.width = 5;
+    this.height = 5;
     this.image.src = "pineapple_enemy_converted.png";
     this.position = new Vector2();
     this.position.set(x, y);

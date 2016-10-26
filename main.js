@@ -166,20 +166,114 @@ function bound(value, min, max) {
     return value;
 }
 //--------------------------------------------------------------------
-var musicBackground;
+var musicBackgroundLevel1;
+var musicBackgroundLevel2;
+var MusicBackgroundLevel3;
+var MusicBackgroundLevel4;
+var MusicBackgroundLevel5;
+var MusicBackgroundLevel6;
 
 var cells = []; // the array that holds our simplified collision data
 function initialize()
 {
+    enemies = []
     cells = [];
 
-    musicBackground = new Howl({
-        urls: ["Music/Blazing-Stars_Level_1.ogg"],
-        loop: true,
-        buffer: true,
-        volume: 0.6
-    });
-    musicBackground.play();
+    //-----MUSIC---------
+    if (currentLevel == level1) {
+        musicBackgroundLevel1 = new Howl({
+            urls: ["Music/Blazing-Stars_Level_1.ogg"],
+            loop: true,
+            buffer: true,
+            volume: 0.6
+        });
+    
+        musicBackgroundLevel1.play();
+    }
+
+
+
+        if (currentLevel == level2) {
+            musicBackgroundLevel1.stop()
+
+            musicBackgroundLevel2 = new Howl({
+                urls: ["Music/Light-Years_Ending_Credits.mp3"],
+                loop: true,
+                buffer: true,
+                volume: 0.6
+            });
+    
+            musicBackgroundLevel2.play();
+
+        }
+
+
+        if (currentLevel == level3)
+        {
+            musicBackgroundLevel2.stop()
+
+            musicBackgroundLevel3 = new Howl({
+                urls: ["Music/Night-Winds_Intro_Music.mp3"],
+                loop: true,
+                buffer: true,
+                volume: 0.6
+            });
+
+            musicBackgroundLevel3.play();
+
+        }
+
+        if (currentLevel == level4) {
+            musicBackgroundLevel3.stop()
+
+            musicBackgroundLevel4 = new Howl({
+                urls: ["Music/Urban-Jungle-2061_Level_3.mp3"],
+                loop: true,
+                buffer: true,
+                volume: 0.6
+            });
+
+            musicBackgroundLevel4.play();
+
+        }
+
+        if (currentLevel == level5) {
+            musicBackgroundLevel4.stop()
+
+            musicBackgroundLevel5 = new Howl({
+                urls: ["Music/Trouble-on-Mercury_Level_2.mp3"],
+                loop: true,
+                buffer: true,
+                volume: 0.6
+            });
+
+            musicBackgroundLevel5.play();
+
+        }
+
+        if (currentLevel == level6) {
+            musicBackgroundLevel5.stop()
+
+            musicBackgroundLevel6 = new Howl({
+                urls: ["Music/World-of-Automatons_Boss_Fight.mp3"],
+                loop: true,
+                buffer: true,
+                volume: 0.6
+            });
+
+            musicBackgroundLevel6.play();
+
+        }
+
+
+
+
+
+
+
+
+
+
     player.position.set(3 * TILE, 0 * TILE);
    
 
@@ -246,38 +340,62 @@ function initialize()
     }*/
 
     //-------------------------------ENEMY's from left-right --------------------------
+    if (currentLevel == level1)
+    {
+        //wall of pineapples top-bottom
+        // first pineapple 
+        var px = tileToPixel(20);
+        var py = tileToPixel(3.5);
+        var e = new Enemy(px, py);
+        enemies.push(e);
 
-    //wall of pineapples top-bottom
-    // first pineapple 
-    var px = tileToPixel(20);
-    var py = tileToPixel(3.5);
-    var e = new Enemy(px, py);
-    enemies.push(e);
+        //second pinapple
+        var px = tileToPixel(20);
+        var py = tileToPixel(1);
+        var e = new Enemy(px, py);
+        enemies.push(e);
 
-    //second pinapple
-    var px = tileToPixel(20);
-    var py = tileToPixel(1);
-    var e = new Enemy(px, py);
-    enemies.push(e);
+        //third pinapple
+        var px = tileToPixel(20);
+        var py = tileToPixel(-1.5);
+        var e = new Enemy(px, py);
+        enemies.push(e);
+        //-----------------------------
 
-    //third pinapple
-    var px = tileToPixel(20);
-    var py = tileToPixel(-1.5);
-    var e = new Enemy(px, py);
-    enemies.push(e);
-    //-----------------------------
+        //second pineapple
+        var px = tileToPixel(45.5);
+        var py = tileToPixel(4);
+        var e = new Enemy(px, py);
+        enemies.push(e);
 
-    //second pineapple
-    var px = tileToPixel(45.5);
-    var py = tileToPixel(4);
-    var e = new Enemy(px, py);
-    enemies.push(e);
+        //third pineapple
+        var px = tileToPixel(55);
+        var py = tileToPixel(6.5);
+        var e = new Enemy(px, py);
+        enemies.push(e);
+    }
 
-    //third pineapple
-    var px = tileToPixel(55);
-    var py = tileToPixel(6.5);
-    var e = new Enemy(px, py);
-    enemies.push(e);
+    if (currentLevel == level3)
+    {
+        //first pineapple
+        var px = tileToPixel(20);
+        var py = tileToPixel(3.5);
+        var e = new Enemy(px, py);
+        enemies.push(e);
+
+        
+        //second pineapple
+        var px = tileToPixel(25);
+        var py = tileToPixel(3.5);
+        var e = new Enemy(px, py);
+        enemies.push(e);
+
+
+
+
+    }
+
+
 
     //-----------------------------------------------------------
 
@@ -445,12 +563,14 @@ function drawMap() {
         context.font = "50px Comic Sans";
         context.fillText("Game Over", 200, 290);
 
+       
+
     }
 
     function runWinGame(deltaTime)
     {
         var winPizza = document.createElement("img");
-        winPizza.src = "wining pizza.png";
+        winPizza.src = "winning pizza.png";
 
         context.drawImage(winPizza, 0, 0, canvas.width, canvas.height);
 
@@ -458,6 +578,8 @@ function drawMap() {
         context.fillStyle = "#7D0552";
         context.font = "50px Comic Sans";
         context.fillText("You Win!", 200, 290);
+
+       
     }
 
 
@@ -494,15 +616,16 @@ function run() {
     //player collision
     for (var i = 0; i < enemies.length; i++) {
         if (intersects(
-         player.position.x - player.width / 2,
-         player.position.y - player.height / 2,
-         player.width, player.height,
-         enemies[i].position.x - enemies[i].width / 2,
-         enemies[i].position.y - enemies[i].height / 2,
-         enemies[i].width, enemies[i].height) == true) {
+         player.position.x - 50 / 2,
+         player.position.y - 50 / 2,
+         50, 50,
+         enemies[i].position.x - 50 / 2,
+         enemies[i].position.y - 50 / 2,
+         50, 50) == true) {
             
-
-          player.isDead = false;
+            lives -= 1;
+            player.position.set(9 * TILE, 0 * TILE);
+         
             console.log("IS DEAD")
 
         }
@@ -514,6 +637,10 @@ function run() {
 
     }
     
+    if (lives == 0)
+    {
+        gameState = STATE_GAMEOVER
+    }
 
 
 //--------------------------------------------

@@ -42,7 +42,7 @@ var Player = function ()
     this.position.set(9 * TILE, 0 * TILE);
 
     this.width = 112;
-    this.height = 163;
+    this.height = 150;
 
     this.velocity = new Vector2();
 
