@@ -8,10 +8,11 @@ var endFrameMillis = Date.now();
 var STATE_SPLASH = 0;
 var STATE_GAME = 1;
 var STATE_GAMEOVER = 2;
+var STATE_WIN = 3;
 
 //-------SCORE-----
 var score = 0
-var timer = 120;
+var timer = 160;
 //-------SCORE------
 
 var gameState = STATE_SPLASH
@@ -48,14 +49,11 @@ var LAYER_PLATFORMS = 1;
 var LAYER_LADDERS = 2;
 var LAYER_OBJECT_TRIGGERS = 3;
 
-if (currentLevel = level1 || level2 || level3)
-{
-    var MAP = { tw: 60, th: 15 };
-}
-else if (currentLevel = level4)
-{
-    var MAP = { tw: 120, th: 15 };
-}
+var currentLevel = level1;
+
+var MAP;
+
+
 
 var TILE = 35;
 var TILESET_TILE = TILE * 2;
@@ -64,7 +62,7 @@ var TILESET_SPACING = 2;
 var TILESET_COUNT_X = 14;
 var TILESET_COUNT_Y = 14;
 
-var currentLevel = level1;
+
 
 var lives = 3;
 
@@ -171,7 +169,10 @@ function bound(value, min, max) {
 var musicBackground;
 
 var cells = []; // the array that holds our simplified collision data
-function initialize() {
+function initialize()
+{
+    cells = [];
+
     musicBackground = new Howl({
         urls: ["Music/Blazing-Stars_Level_1.ogg"],
         loop: true,
@@ -280,7 +281,22 @@ function initialize() {
 
     //-----------------------------------------------------------
 
-
+    if (currentLevel == level1 || currentLevel == level2 || currentLevel == level3)
+    {
+        MAP = { tw: 60, th: 15 };
+    }
+    else if (currentLevel == level4)
+    {
+        MAP = { tw: 120, th: 15 };
+    }
+    else if (currentLevel == level5)
+    {
+        MAP = { tw: 180, th: 15 };
+    }
+    else (currentLevel == level6)
+    {
+        MAP = { tw: 240, th: 15 }
+    }
     
 }
 //---------------------------------------------------------------------------------------------------------------------------
@@ -342,8 +358,8 @@ function drawMap() {
 
         //this customizies the splash 
         context.fillStyle = "#7D0552";
-        context.font = "50px Comic Sans";
-        context.fillText("Are you ready?", 170, 290);
+        context.font = "30px Comic Sans";
+        context.fillText("Are you ready? Go to the exit sign!", 120, 240);
     }
     
     function runGame(deltaTime) {
@@ -431,7 +447,18 @@ function drawMap() {
 
     }
 
+    function runWinGame(deltaTime)
+    {
+        var winPizza = document.createElement("img");
+        winPizza.src = "wining pizza.png";
 
+        context.drawImage(winPizza, 0, 0, canvas.width, canvas.height);
+
+        //this customizies the splash 
+        context.fillStyle = "#7D0552";
+        context.font = "50px Comic Sans";
+        context.fillText("You Win!", 200, 290);
+    }
 
 
 
@@ -492,7 +519,8 @@ function run() {
 //--------------------------------------------
 
 
-    switch (gameState) {
+    switch (gameState)
+    {
         case STATE_SPLASH:
             runSplash(deltaTime);
             break;
@@ -501,6 +529,9 @@ function run() {
             break;
         case STATE_GAMEOVER:
             runGameOver(deltaTime);
+            break;
+        case STATE_WIN:
+            runWinGame(deltaTime);
             break;
     }
     

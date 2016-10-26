@@ -41,7 +41,7 @@ var Player = function ()
     this.position = new Vector2()
     this.position.set(9 * TILE, 0 * TILE);
 
-    this.width = 159;
+    this.width = 112;
     this.height = 163;
 
     this.velocity = new Vector2();
@@ -215,6 +215,12 @@ Player.prototype.update = function (deltaTime)
     {
         currentLevel = level6;
         initialize();
+        return;
+    }
+
+    if (cellAtTileCoord(LAYER_OBJECT_TRIGGERS, tx, ty) && currentLevel == level6)
+    {
+        gameState = STATE_WIN;
         return;
     }
 
